@@ -1,0 +1,132 @@
+public class ApexP0Exercises {
+    public static Integer nFibonacci( Integer n ){
+        //exit condition
+        if (n<=1){
+            return n;
+                }
+        //recursion
+        return (nFibonacci(n-1)+nFibonacci(n-2));
+	}
+    
+    public static Integer[] sortArray( Integer[] intList ) {
+        //initilize result list and set it to input value
+        Integer[] result = new List<Integer>(); 
+        result = intList;
+        //for loop, swaps array elements j and i, if j<i as j loops over list from end
+        for (integer i=0; i<intList.size(); i++){
+            for (integer j=intList.size()-1; j>i; j--){
+                if (result[j]<result[i]){
+                    Integer tmp = result[i];
+                    result[i]=result[j];
+                    result[j]=tmp;
+                }
+            }
+        }
+        return result;
+    }
+    
+    public static Integer nFactorial( Integer n) {
+        if (n==0){
+            return n;
+        }
+        // initialize result variable
+        Integer result;
+        result = 1;
+        // for loop that factorials
+        for (Integer i=1; i<=n; i++){
+        	result=result*i;
+        }
+        return result;
+    }
+    public static Integer[] rotateLeftNTimes( Integer[] intArray, Integer n) {
+        //instantiate result array as a copy of input array
+        Integer[] result =new List<Integer>();
+        result = intArray;
+        //chop off the first element and glue it on the end n times
+        for (integer i=0;i<n;i++){
+            Integer tmp;
+            tmp=result[0];
+            result.remove(0);
+            result.add(tmp);
+        }
+        return result;
+    }
+    
+    public static Boolean bracketsAreBalanced( String s ) {
+        //create array of string char values with getChars()
+        //key (40,)41,[91,]93,{123,}125
+        List<Integer>chars = s.getChars();
+        List<Integer>result= new List<Integer>();
+        //loop over list elements
+        for (integer ch:chars){
+            //if opening bracket add to result list
+            if (ch==40||ch==91||ch==123){
+                result.add(ch);
+                continue;
+            }
+            //if closing bracket and matches last bracket added to result list
+            //remove the opening bracket from result list
+            if (ch==41&&ch==result[result.size()-1]+1){
+                result.remove(result.size()-1);
+                continue;
+            }
+            if (ch==91||ch==123&&ch==result[result.size()-1]+2){
+                result.remove(result.size()-1);
+                continue;
+            }
+            //if the above doesn't happen, then the brackets are unbalanced
+            else return False;
+        }
+        return True;
+    }
+    
+    public static void updateAccountSize( ) {
+        //create list of all account records
+        Account[] accts = [Select Id, NumberOfEmployees, Size__c FROM Account];
+        //for loop and if statements to assign corresponding size to each account
+        for (Account a: accts){
+	       if (a.NumberOfEmployees<1000){
+               a.Size__C = 'Small';
+             }
+           else if (a.NumberOfEmployees>=1000&&a.NumberofEmployees<10000){
+               a.Size__C= 'Medium';
+                   }
+            else if (a.NumberOfEmployees>=10000){
+                a.Size__c= 'Large';
+            }
+            system.debug(a);
+        }
+        //update records
+        update accts;
+    }
+    
+    public static void updateCALeads( ) {
+        //sosl query to find ca in all fields, returning a list of Leads
+        List<List<Lead>> searchList = [FIND 'ca' IN ALL FIELDS 
+                   RETURNING Lead(State)];
+        // if Lead State is california, close the lead and change description
+        for (Lead l:searchList[0]){
+            if (l.State == 'CA'){
+                l.Status = 'Closed - Not Converted';
+                l.Description = 'We are no longer doing business in California';
+            }
+        }
+        //dml database update
+        update searchList[0];       
+    }
+    
+    public static void closePastDueOpportunities( ) {
+        // query for list of opps that are past their close date
+        List<Opportunity> opps = [SELECT CloseDate, isClosed, isWon From Opportunity Where CloseDate<Today];
+        //loop over list
+        for (Opportunity o: opps){
+            // if open and not won
+            if (!o.isClosed&&!o.isWon){
+                //set stage to closed lost
+                o.StageName='Closed Lost';               
+            }
+        }
+        //dml update
+        update opps;   
+    }
+}

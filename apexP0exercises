@@ -1,0 +1,48 @@
+public class ApexP0Exercises {
+    public static Integer nFibonacci( Integer n ){
+        if (n<=1){
+            return n;
+                }
+        return (nFibonacci(n-1)+nFibonacci(n-2));
+	}
+    
+    public static Integer[] sortArray( Integer[] intList ) {
+        
+        for (int i=0; i<intList.size; i++){
+            for (int j=0; j<intList.size; j++){
+                if (intList[i]<intList[i+1]){
+                    
+                }
+            }
+        }
+        
+        return Integer[];
+    }
+    
+    public static Integer nFactorial( Integer n) {
+        Integer result = new Integer();
+        for (int i=1; while i<n; i++){
+            result*i;
+        }
+        return Integer;
+    }
+    
+//    public static Integer[] rotateLeftNTimes( Integer[] array, Integer n) {
+//        return Integer[];
+//    }
+    
+//    public static Boolean bracketsAreBalanced( String s ) {
+//        return Boolean;
+//    }
+    
+    public static void updateAccountSize( ) {
+        
+    }
+    public static void updateCALeads( ) {
+        
+    }
+    
+    public static void closePastDueOpportunities( ) {
+        
+    }
+}

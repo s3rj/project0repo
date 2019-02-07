@@ -1,0 +1,43 @@
+public class BankMethods {
+    
+    public static void accountStatus(){
+        List<Bank_Account__C> accts = new list<Bank_Account__C>();
+        accts = [SELECT Id, Status__c, Account_Balance__c FROM Bank_Account__c
+                Where Id='a011U00000E5xjeQAB'];
+        system.debug(accts[0].Account_Balance__c);
+        for (integer i = 0; i<accts.size();i++){
+            system.debug(accts[0].Account_Balance__c);
+            if (accts[i].Account_Balance__c < 0){
+                System.debug('in if loop');
+                accts[i].Status__c='Overdrawn';
+            }
+        update accts;
+        }
+    }
+    
+    public static void createTransaction(string acctID, double transactionAmmount){
+        //create new transaction object
+        Transaction__C trnsctn = new Transaction__C(Bank_Account__c=acctID, Transaction_Amount__c=transactionAmmount);
+        //upload transaction to database
+        insert trnsctn;
+    }
+    
+    public static void accountBalance(){
+        //queries for accts and transactions
+       list<Bank_Account__c> accts = [SELECT Name,apexbalance__c FROM Bank_Account__c];
+       list<Transaction__c> trns = [SELECT Transaction_Amount__c,Bank_Account__c from Transaction__c];
+        // loop over records matching transactions to account and incrementing and setting balance
+        for (Bank_Account__c a:accts){
+            string bankid=a.Id;
+            decimal balance;
+            for (Transaction__c t:trns){
+                if (t.Bank_Account__c ==bankid){
+                    balance+=t.Transaction_Amount__c;
+                }
+            }
+            a.ApexBalance__c = balance;
+        }
+        //update database
+        update accts;
+    }
+}
